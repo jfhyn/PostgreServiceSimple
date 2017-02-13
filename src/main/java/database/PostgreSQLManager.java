@@ -191,6 +191,30 @@ public class PostgreSQLManager {
         }
     }
 
+    public int countPosts() throws SQLException{
+        int postNumber = 0;
+
+        Connection conn = null;
+
+        try{
+            conn = openConnection();
+            conn.setAutoCommit(false);
+
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery( "SELECT COUNT(*) AS number FROM posts;");
+            postNumber = rs.next() ? rs.getInt("number") : 0;
+            rs.close();
+            stmt.close();
+
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        finally {
+            conn.close();
+        }
+        return postNumber;
+    }
+
     public List<Post> selectAllPosts() throws SQLException {
         Connection conn = null;
 
@@ -202,6 +226,37 @@ public class PostgreSQLManager {
 
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery( "SELECT * FROM posts ORDER BY post_id;" );
+            while ( rs.next() ) {
+                Post note = new Post();
+                note.setDate(rs.getString("publish_date"));
+                note.setUsername(rs.getString("username"));
+                note.setText(rs.getString("post_text"));
+                notes.add(note);
+            }
+            rs.close();
+            stmt.close();
+
+            return notes;
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        finally {
+            conn.close();
+        }
+        return null;
+    }
+
+    public List<Post> selectPosts(int pageNumber) throws SQLException {
+        Connection conn = null;
+
+        try{
+            conn = openConnection();
+            conn.setAutoCommit(false);
+
+            List<Post> notes = new ArrayList<Post>();
+
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery( "SELECT * FROM posts ORDER BY post_id DESC LIMIT 5 OFFSET " + (pageNumber - 1) * 5 + ";");
             while ( rs.next() ) {
                 Post note = new Post();
                 note.setDate(rs.getString("publish_date"));
@@ -290,7 +345,7 @@ public class PostgreSQLManager {
         try {
             Class.forName("org.postgresql.Driver");
             //Class.forName(driver);
-            return DriverManager.getConnection("jdbc:postgresql://localhost:5432/service","postgres","123");
+            return DriverManager.getConnection("jdbc:postgresql://localhost:5432/service","postgres","admin");
             //return DriverManager.getConnection(connectionString,username,password);
         } catch (Exception e) {
             e.printStackTrace();

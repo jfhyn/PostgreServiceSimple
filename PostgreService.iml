@@ -16,5 +16,7 @@
     <orderEntry type="library" name="Maven: postgresql:postgresql:9.0-801.jdbc4" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-core:4.3.0.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: commons-logging:commons-logging:1.2" level="project" />
+    <orderEntry type="library" name="Maven: org.webjars:bootstrap:3.3.6" level="project" />
+    <orderEntry type="library" name="Maven: org.webjars:jquery:1.11.1" level="project" />
   </component>
 </module>

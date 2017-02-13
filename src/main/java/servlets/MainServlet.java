@@ -19,20 +19,24 @@ import java.util.List;
 
 @WebServlet("/main")
 public class MainServlet extends HttpServlet {
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            PostgreSQLManager pm = new PostgreSQLManager();
-            pm.createMasterTable();
-            pm.createPartitionFunction();
-            //pm.insertIntoPosts(request.getParameter("username"), request.getParameter("text"));
 
-            //TODO change!!
-            doGet(request, response);
+        String formName = request.getParameter("type");
+        try {
+                PostgreSQLManager pm = new PostgreSQLManager();
+                pm.createMasterTable();
+                pm.createPartitionFunction();
+                pm.insertIntoPosts(request.getParameter("username"), request.getParameter("text"));
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        //TODO change!!
+        doGet(request, response);
     }
 
     @Override
@@ -40,17 +44,23 @@ public class MainServlet extends HttpServlet {
             throws ServletException, IOException {
 
         response.setContentType("text/html");
-
         List<Post> posts = null;
+        int page = request.getParameter("page") == null ? 1 : Integer.parseInt(request.getParameter("page"));
+        int postNumber = 0;
+
         try {
             PostgreSQLManager pm = new PostgreSQLManager();
-            posts  = pm.selectAllPosts();
+
+            postNumber = pm.countPosts();
+            posts = pm.selectPosts(page);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        request.setAttribute("posts", posts);
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/index.jsp");
+        request.setAttribute("posts", posts);
+        request.setAttribute("postNumber", postNumber);
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/index.jsp?page=" + page);
         dispatcher.forward(request, response);
     }
 }
