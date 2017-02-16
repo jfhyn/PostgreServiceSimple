@@ -1,0 +1,42 @@
+body{
+    display: block;
+    text-align: center;
+    margin: auto;
+    background-color: #F0F8FF;
+    -webkit-align-content: center;
+    align-content: center;
+}
+
+.container{
+    width: 70%;
+    height: 100%;
+    background-color: #F8F8FF;
+}
+
+.form{
+    margin: 5px;
+}
+
+.post_text{
+    align-content: top;
+    height: 100px;
+    width: 300px;
+}
+
+.post{
+    display: inline-block;
+    border-radius: 20px;
+    background: #E6E6FA;
+    border: 1px solid #708090;
+    padding: 15px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.name{
+     display: inline-block;
+}
+
+.text{
+    display: inline-block;
+}

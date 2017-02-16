@@ -24,12 +24,17 @@ public class MainServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String formName = request.getParameter("type");
         try {
                 PostgreSQLManager pm = new PostgreSQLManager();
-                pm.createMasterTable();
-                pm.createPartitionFunction();
-                pm.insertIntoPosts(request.getParameter("username"), request.getParameter("text"));
+                //pm.createMasterTable();
+                //pm.createPartitionFunction();
+
+                String username = request.getParameter("username");
+                String text = request.getParameter("text");
+
+                if ((username != null && !username.isEmpty()) && (text != null && !text.isEmpty())) {
+                    pm.insertIntoPosts(username, text);
+                }
 
         } catch (SQLException e) {
             e.printStackTrace();
