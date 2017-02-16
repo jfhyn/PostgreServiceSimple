@@ -191,6 +191,31 @@ public class PostgreSQLManager {
         }
     }
 
+    public void insertIntoPostsCertainDate(String name, String text, String date) throws SQLException {
+        Connection conn = null;
+        Statement stmt = null;
+
+        try {
+            conn = openConnection();
+            conn.setAutoCommit(false);
+
+            stmt = conn.createStatement();
+
+            String sql = "INSERT INTO Posts(publish_date, username, post_text) "
+                    + "VALUES ('" + date + "', '" + name + "', '" + text + "');";
+            stmt.executeUpdate(sql);
+            stmt.close();
+            conn.commit();
+
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+        finally {
+            conn.close();
+        }
+    }
+
+
     public int countPosts() throws SQLException{
         int postNumber = 0;
 
@@ -275,6 +300,10 @@ public class PostgreSQLManager {
             conn.close();
         }
         return null;
+    }
+
+    public void dropAllTables(){
+        //TODO
     }
 
     private void createDatabaseIfNotExist(String name, String role, String password) throws SQLException {

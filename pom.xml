@@ -6,7 +6,7 @@
 
     <groupId>PostgreService</groupId>
     <artifactId>PostgreService</artifactId>
-    <version>1.0</version>
+    <version>1.7</version>
 
     <packaging>war</packaging>
 
